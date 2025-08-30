@@ -89,24 +89,44 @@ export function SearchBar({ onSearch, isLoading }: SearchBarProps) {
                   <option value="FEMININO">Feminino</option>
                 </select>
               </div>
-              {/* <div>
+              <div>
                 <label className="block text-sm font-medium text-foreground mb-1">
-                  Idade
+                  Idade Inicial
                 </label>
                 <Input
                   type="number"
                   placeholder="Idade"
-                  value={filters. || ''}
+                  value={filters.faixaIdadeInicial?.toString() || ''}
                   onChange={(e) =>
                     setFilters({
                       ...filters,
-                      idade: e.target.value
+                      faixaIdadeInicial: e.target.value
                         ? Number.parseInt(e.target.value)
                         : undefined,
                     })
                   }
+                  className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground"
                 />
-              </div> */}
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-1">
+                  Idade Final
+                </label>
+                <Input
+                  type="number"
+                  placeholder="Idade"
+                  value={filters.faixaIdadeFinal?.toString() || ''}
+                  onChange={(e) =>
+                    setFilters({
+                      ...filters,
+                      faixaIdadeFinal: e.target.value
+                        ? Number.parseInt(e.target.value)
+                        : undefined,
+                    })
+                  }
+                  className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground"
+                />
+              </div>
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1">
                   Status
@@ -122,8 +142,8 @@ export function SearchBar({ onSearch, isLoading }: SearchBarProps) {
                   className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground"
                 >
                   <option value="">Todos</option>
-                  <option value="DESAPARECIDO">Localizada</option>
-                  <option value="LOCALIZADO">Desaparecida</option>
+                  <option value="LOCALIZADO">Localizada</option>
+                  <option value="DESAPARECIDO">Desaparecida</option>
                 </select>
               </div>
             </div>

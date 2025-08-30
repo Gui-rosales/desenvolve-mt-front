@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Link, useLocation } from 'react-router';
-import { Search, Heart, Info } from 'lucide-react';
+import { Search } from 'lucide-react';
 
 interface LayoutProps {
   children: ReactNode;
@@ -18,8 +18,12 @@ export function Layout({ children }: LayoutProps) {
               to="/"
               className="flex items-center space-x-3"
             >
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                <Heart className="w-6 h-6 text-primary-foreground" />
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center">
+                <img
+                  src="/logo-pc.png"
+                  alt="Logo da Polícia Civil"
+                  className="w-12 h-16"
+                />
               </div>
               <div>
                 <h1 className="text-xl font-bold text-foreground">
@@ -43,7 +47,7 @@ export function Layout({ children }: LayoutProps) {
                 <Search className="w-4 h-4" />
                 <span>Buscar</span>
               </Link>
-              <Link
+              {/* <Link
                 to="/sobre"
                 className={`flex items-center space-x-2 px-3 py-2 rounded-md transition-colors ${
                   location.pathname === '/sobre'
@@ -53,7 +57,7 @@ export function Layout({ children }: LayoutProps) {
               >
                 <Info className="w-4 h-4" />
                 <span>Sobre</span>
-              </Link>
+              </Link> */}
             </nav>
           </div>
         </div>

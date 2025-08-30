@@ -20,7 +20,7 @@ export function formatDate(dateString: string): string {
 }
 
 export function getStatusText(pessoa: pessoaModel): string {
-  if (pessoa.ultimaOcorrencia.encontradoVivo) {
+  if (pessoa.ultimaOcorrencia.dataLocalizacao || pessoa.ultimaOcorrencia.encontradoVivo) {
     return 'Localizada';
   } else if (!pessoa.vivo) {
     return 'Falecida';
@@ -28,8 +28,8 @@ export function getStatusText(pessoa: pessoaModel): string {
   return 'Desaparecida';
 }
 
-export function getStatusColor(pessoa: any): string {
-  if (pessoa.vivo && pessoa.ultimaocorrencia?.dataLocalizacao) {
+export function getStatusColor(pessoa: pessoaModel): string {
+  if (pessoa.vivo && (pessoa.ultimaOcorrencia?.encontradoVivo)) {
     return 'bg-primary text-primary-foreground';
   } else if (!pessoa.vivo) {
     return 'bg-destructive text-destructive-foreground';
