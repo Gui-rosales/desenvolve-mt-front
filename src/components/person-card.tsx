@@ -15,20 +15,16 @@ export function PersonCard({ person }: PersonCardProps) {
 
   return (
     <Link to={`/pessoa/${person.id}`}>
-      <Card className="hover:shadow-lg transition-all duration-200 hover:scale-[1.02] cursor-pointer group">
-        <CardContent className="p-0">
-          <div className="aspect-[3/4] relative overflow-hidden rounded-t-lg">
+      <Card className="hover:shadow-lg transition-all duration-200 hover:scale-[1.02] cursor-pointer group p-0">
+        <CardContent className="xl:min-h-[450px] xl:max-h-[450px] p-0">
+          <div className="w-full aspect-[4/4] relative overflow-hidden rounded-t-lg">
             <img
               src={
                 person.urlFoto ||
                 '/placeholder.jpg?height=400&width=300&query=person'
               }
               alt={`Foto de ${person.nome}`}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
-            //   onError={(e) => {
-            //     const target = e.target as HTMLImageElement;
-            //     target.src = '/diverse-group.png';
-            //   }}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200 rounded-t-lg"
             />
             <div className="absolute top-3 right-3">
               <Badge className={statusColor}>{statusText}</Badge>
@@ -45,7 +41,7 @@ export function PersonCard({ person }: PersonCardProps) {
                   <User className="w-3 h-3" />
                   <span>{person.idade} anos</span>
                 </div>
-                <span>{person.sexo}</span>
+                <span>{person.sexo === 'MASCULINO' ? 'Masculino' : 'Feminino'}</span>
               </div>
             </div>
 
