@@ -7,7 +7,7 @@ export type pessoaModel = {
   urlFoto: string;
   ultimaOcorrencia: {
     dtDesaparecimento: string;
-    dataLocalizacao: string;
+    dataLocalizacao: string | null;
     encontradoVivo: boolean;
     localDesaparecimentoConcat: string;
     ocorrenciaEntrevDesapDTO: {
