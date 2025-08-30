@@ -1,47 +1,23 @@
-import React from 'react';
-
-import { useState } from 'react';
-import { useInView } from 'react-intersection-observer';
 import { Loader2, Users, Heart } from 'lucide-react';
 import { SearchBar } from './components/search-bar';
 import { PersonCard } from '@/components/person-card';
 import { SkeletonCard } from '@/components/skeleton-card';
 import { ErrorDisplay } from '@/components/error-display';
-import { useSearchPessoas } from '@/app/hooks/pessoas/search-pessoas';
-import type { searchPessoasRequest } from '@/app/services/pessoa/search-pessoas';
+import { useHomeController } from './use-home-controller';
 
 export function HomePage() {
-  const [filters, setFilters] = useState<searchPessoasRequest>({});
-
   const {
-    data,
+    allPeople,
+    totalElements,
     isLoading,
     isError,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
+    handleSearch,
     refetch,
-  } = useSearchPessoas(filters);
-
-  const { ref, inView } = useInView({
-    threshold: 0,
-    rootMargin: '100px',
-  });
-
-  // Trigger fetch next page when in view
-  React.useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
-
-  const handleSearch = (newFilters: searchPessoasRequest) => {
-    setFilters(newFilters);
-  };
-
-  const allPeople = data?.pages.flatMap((page) => page.content) || [];
-  const totalElements = data?.pages[0]?.totalElements || 0;
+    isFetchingNextPage,
+    hasNextPage,
+    ref,
+    pessoasCounter,
+  } = useHomeController();
 
   if (isError) {
     return (
@@ -87,16 +63,18 @@ export function HomePage() {
         <div className="flex items-center justify-center gap-8 pt-4">
           <div className="text-center">
             <div className="text-2xl font-bold text-primary">
-              {totalElements.toLocaleString()}
+              {pessoasCounter?.quantPessoasDesaparecidas.toLocaleString()}
             </div>
             <div className="text-sm text-muted-foreground">
-              Registros no sistema
+              Pessoas Desaparecidas
             </div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-primary">24/7</div>
+            <div className="text-2xl font-bold text-primary">
+              {pessoasCounter?.quantPessoasEncontradas.toLocaleString()}
+            </div>
             <div className="text-sm text-muted-foreground">
-              Disponível sempre
+              Pessoas Encontradas
             </div>
           </div>
         </div>

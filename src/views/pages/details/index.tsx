@@ -1,33 +1,23 @@
-'use client';
-
-import { useParams, Link } from 'react-router';
+import { Link } from 'react-router';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { PersonDetails } from './components/person-detailts-card';
-import { useGetPessoa } from '@/app/hooks/pessoas/get-pessoas';
+import { PersonDetails } from './components/person-details-card';
 import { OcorrenciaList } from './components/ocorrencia-list-card';
 import { ErrorDisplay } from '@/components/error-display';
-import { getOcorrenciasById } from '@/app/hooks/ocorrencias/get-ocorrencia';
 import { AddOcorrenciaModal } from './components/add-ocorrencia-modal';
+import { useDetailsController } from './use-details-controller';
 
 export function DetailPage() {
-  const { id } = useParams<{ id: string }>();
-  const personId = id ? Number.parseInt(id) : 0;
-
   const {
-    data: person,
-    isLoading: isLoadingPerson,
-    isError: isErrorPerson,
-    refetch: refetchPerson,
-  } = useGetPessoa(personId);
-
-  const ocoId = person?.ultimaOcorrencia?.ocoId;
-
-  const {
-    data: ocorrencias,
-    isLoading: isLoadingOcorrencias,
-    isError: isErrorOcorrencias,
-  } = getOcorrenciasById(ocoId || 0);
+    person,
+    ocoId,
+    isLoadingPerson,
+    isErrorPerson,
+    refetchPerson,
+    ocorrencias,
+    isLoadingOcorrencias,
+    isErrorOcorrencias,
+  } = useDetailsController();
 
   if (isLoadingPerson) {
     return (
@@ -94,7 +84,6 @@ export function DetailPage() {
         {ocoId && <AddOcorrenciaModal ocoId={ocoId} />}
       </div>
 
-      {/* Person Details */}
       <PersonDetails person={person} />
 
       {/* Additional Information */}

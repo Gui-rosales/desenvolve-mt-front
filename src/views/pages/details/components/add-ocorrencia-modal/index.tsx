@@ -1,12 +1,3 @@
-'use client';
-
-import type React from 'react';
-
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { ChevronDownIcon, Plus, Upload, X } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -14,10 +5,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { useAddOcorrenciaModalController } from './use-add-ocorrencia-modal-controller';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
+import { ChevronDownIcon, Plus, Upload, X } from 'lucide-react';
 import { Label } from '@/components/ui/label';
-import { useRegisterOcorrencia } from '@/app/hooks/ocorrencias/register-ocorrencia';
+import { Textarea } from '@/components/ui/textarea';
 import {
   Popover,
   PopoverContent,
@@ -25,85 +17,27 @@ import {
 } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 
-const ocorrenciaSchema = z.object({
-  informacao: z
-    .string()
-    .min(10, 'A informação deve ter pelo menos 10 caracteres'),
-  descricao: z.string().min(5, 'A descrição da informação é obrigatória'),
-  data: z.date({
-    error: 'Uma data de avistamento é necessário',
-  }),
-  // .refine((data) => {
-  //   if (!data.match(/^\d{4}-\d{2}-\d{2}$/)) {
-  //     return 'Formato de data inválida';
-  //   }
-
-  //   if (data) {
-  //     const [year, month, day] = data.split('-').map(Number);
-  //     const isValidDate = !isNaN(year) && !isNaN(month) && !isNaN(day);
-  //     return isValidDate || 'Data inválida';
-  //   }
-  //   return 'Data inválida';
-  // }),
-});
-
-type OcorrenciaFormData = z.infer<typeof ocorrenciaSchema>;
-
 interface AddOcorrenciaModalProps {
   ocoId: number;
 }
 
 export function AddOcorrenciaModal({ ocoId }: AddOcorrenciaModalProps) {
-  const [open, setOpen] = useState(false);
-  const [dateModal, setDateModal] = useState(false);
-  const [files, setFiles] = useState<File[]>([]);
-  const mutation = useRegisterOcorrencia();
-
   const {
-    register,
+    open,
+    setOpen,
     handleSubmit,
-    setValue,
-    formState: { errors },
+    register,
+    errors,
     getValues,
-    reset,
-  } = useForm<OcorrenciaFormData>({
-    resolver: zodResolver(ocorrenciaSchema),
-  });
-
-  const onSubmit = async (data: OcorrenciaFormData) => {
-    try {
-      const formData = new FormData();
-
-      for (const file of files) {
-        formData.append('files', file);
-      }
-
-      await mutation.mutateAsync({
-        ocoId,
-        informacao: data.informacao,
-        files: formData,
-        descricao: data.descricao,
-        data: data.data.toISOString().split('T')[0], // yyyy-mm-dd
-      });
-
-      reset();
-      setFiles([]);
-      setOpen(false);
-    } catch (error) {
-      console.error('Erro ao registrar ocorrência:', error);
-    }
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const newFiles = Array.from(e.target.files);
-      setFiles((prev) => [...prev, ...newFiles]);
-    }
-  };
-
-  const removeFile = (index: number) => {
-    setFiles((prev) => prev.filter((_, i) => i !== index));
-  };
+    setValue,
+    dateModal,
+    setDateModal,
+    files,
+    onSubmit,
+    handleFileChange,
+    removeFile,
+    mutation,
+  } = useAddOcorrenciaModalController({ ocoId });
 
   return (
     <Dialog
@@ -111,7 +45,7 @@ export function AddOcorrenciaModal({ ocoId }: AddOcorrenciaModalProps) {
       onOpenChange={setOpen}
     >
       <DialogTrigger asChild>
-        <Button className="w-full sm:w-auto">
+        <Button className="w-full sm:w-auto cursor-pointer">
           <Plus className="w-4 h-4 mr-2" />
           Registrar Informação
         </Button>
