@@ -11,18 +11,11 @@ export function useAddOcorrenciaModalController({ ocoId }: { ocoId: number }) {
 
   const mutation = useRegisterOcorrencia();
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-    getValues,
-    reset,
-  } = useForm<OcorrenciaFormData>({
+  const form = useForm<OcorrenciaFormData>({
     resolver: zodResolver(ocorrenciaSchema),
   });
 
-  const onSubmit = async (data: OcorrenciaFormData) => {
+  const submitData = form.handleSubmit(async (data: OcorrenciaFormData) => {
     try {
       const formData = new FormData();
 
@@ -38,13 +31,13 @@ export function useAddOcorrenciaModalController({ ocoId }: { ocoId: number }) {
         data: data.data.toISOString().split('T')[0], // yyyy-mm-dd
       });
 
-      reset();
+      form.reset();
       setFiles([]);
       setOpen(false);
     } catch (error) {
       console.error('Erro ao registrar ocorrência:', error);
     }
-  };
+  });
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -64,15 +57,10 @@ export function useAddOcorrenciaModalController({ ocoId }: { ocoId: number }) {
     setDateModal,
     files,
     setFiles,
-    onSubmit,
+    submitData,
     handleFileChange,
     removeFile,
-    register,
-    handleSubmit,
-    setValue,
-    getValues,
-    errors,
-    reset,
+    form,
     mutation,
   };
 }
