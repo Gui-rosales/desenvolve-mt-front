@@ -5,7 +5,8 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 COPY package.json package-lock.json* ./
-RUN npm ci --only=production
+
+RUN npm ci
 
 FROM base AS builder
 WORKDIR /app
@@ -23,6 +24,8 @@ RUN npm run build
 
 FROM nginx:alpine AS runner
 WORKDIR /app
+
+RUN apk add --no-cache curl
 
 COPY --from=builder /app/dist /usr/share/nginx/html
 

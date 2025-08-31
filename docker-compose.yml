@@ -8,15 +8,16 @@ services:
       target: runner
       args:
         NODE_ENV: production
-        VITE_API_URL: ${VITE_API_URL}
+        VITE_API_URL: ${VITE_API_URL:-https://abitus-api.geia.vip/v1}
     ports:
-      - "3000:80"
+      - "80:80"
     container_name: desafio-mt-app
     restart: unless-stopped
     env_file:
       - .env
     environment:
       - NODE_ENV=production
+      - VITE_API_URL=${VITE_API_URL:-https://abitus-api.geia.vip/v1}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/"]
       interval: 30s
