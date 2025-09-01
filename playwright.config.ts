@@ -6,7 +6,6 @@ config({
   path: '.env.local',
 });
 
-
 /* Use process.env.PORT by default and fallback to port 3000 */
 const PORT = process.env.PORT || 5173;
 
@@ -39,7 +38,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL,
@@ -52,6 +51,9 @@ export default defineConfig({
   expect: {
     timeout: 240 * 1000,
   },
+
+  /* Global setup for MSW */
+  globalSetup: './tests/setup/msw-setup.ts',
 
   /* Configure projects for major browsers */
   projects: [
