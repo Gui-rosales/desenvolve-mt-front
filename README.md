@@ -28,6 +28,18 @@ docker run -p 80:80 desenvolve-mt
 docker compose up --build
 ```
 
+### 🌍 Variáveis de Ambiente
+
+Antes de executar o projeto, você deve criar um arquivo `.env` na raiz do repositório com as seguintes variáveis:
+
+```env
+VITE_API_URL=https://api-url/v1
+```
+
+**⚠️ Importante:** 
+- O arquivo `.env` deve estar na raiz do projeto
+- Substitua `https://api-url/v1` pela URL real da sua API
+
 ### 🌐 Acesso à Aplicação
 Após o build do container, a aplicação estará disponível em:
 **http://localhost:80**
