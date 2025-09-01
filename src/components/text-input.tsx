@@ -1,4 +1,3 @@
-
 import {
   type FieldValues,
   type UseControllerProps,
@@ -6,6 +5,7 @@ import {
 } from 'react-hook-form';
 import {
   FormControl,
+  FormField,
   FormItem,
   FormLabel,
   FormMessage,
@@ -38,44 +38,45 @@ export function TextInput<T extends FieldValues>({
   ...rest
 }: TextInputProps<T>) {
   const {
-    field: { onChange, onBlur, value, ref },
     fieldState: { error, invalid },
   } = useController({ name, control, rules });
 
   return (
-    <FormItem className={className}>
-      {label && <FormLabel className="text-sm font-medium">{label}</FormLabel>}
-      <FormControl>
-        <div className="relative">
-          {icon && (
-            <div className="absolute left-3 top-1/2 -translate-y-1/2">
-              {icon}
-            </div>
+    <FormField
+      name={name}
+      control={control}
+      rules={rules}
+      render={({ field }) => (
+        <FormItem className={className}>
+          {label && (
+            <FormLabel className="text-sm font-medium">{label}</FormLabel>
           )}
-          <Input
-            value={format ? format(value) : value}
-            onChange={(e) => {
-              const formattedValue = format
-                ? format(e.target.value)
-                : e.target.value;
-              onChange(formattedValue);
-            }}
-            onBlur={onBlur}
-            placeholder={placeholder}
-            type={type}
-            ref={ref}
-            className={cn(
-              icon ? 'pl-10' : '',
-              error && 'border-red-500 focus:ring-red-500'
-            )}
-            {...rest}
-          />
-        </div>
-      </FormControl>
-      {description && !invalid && (
-        <p className="text-sm text-muted-foreground mt-1">{description}</p>
+          <FormControl>
+            <div className="relative">
+              {icon && (
+                <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                  {icon}
+                </div>
+              )}
+              <Input
+                placeholder={placeholder}
+                type={type}
+                className={cn(
+                  icon ? 'pl-10' : '',
+                  error && 'border-red-500 focus:ring-red-500'
+                )}
+                {...rest}
+                {...field}
+                value={format ? format(field.value) : field.value}
+              />
+            </div>
+          </FormControl>
+          {description && !invalid && (
+            <p className="text-sm text-muted-foreground mt-1">{description}</p>
+          )}
+          <FormMessage className="text-red-500 text-sm mt-1" />
+        </FormItem>
       )}
-      <FormMessage className="text-red-500 text-sm mt-1" />
-    </FormItem>
+    />
   );
 }

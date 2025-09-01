@@ -57,47 +57,23 @@ export function AddOcorrenciaModal({ ocoId }: AddOcorrenciaModalProps) {
             className="space-y-6"
           >
             <div className="space-y-2">
-              <Label htmlFor="informacao">Descrição da Informação *</Label>
               <TextareaInput
+                label="Descrição da Informação *"
                 name="descricao"
                 control={form.control}
                 placeholder="Descreva qualquer informação relevante que possa ajudar na localização..."
                 className="min-h-[120px]"
               />
-              {/* <Textarea
-                id="informacao"
-                placeholder="Descreva qualquer informação relevante que possa ajudar na localização..."
-                className="min-h-[120px]"
-                {...register('descricao')}
-              />
-              {errors.descricao && (
-                <p className="text-sm text-destructive">
-                  {errors.descricao.message}
-                </p>
-              )} */}
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="informacao">
-                Informação sobre a pessoa desaparecida *
-              </Label>
+            <div className="">
               <TextareaInput
+                label="Informação sobre a pessoa desaparecida *"
                 name="informacao"
                 control={form.control}
                 placeholder="Descreva qualquer informação relevante que possa ajudar na localização..."
                 className="min-h-[120px]"
               />
-              {/* <Textarea
-                id="informacao"
-                placeholder="Descreva qualquer informação relevante que possa ajudar na localização..."
-                className="min-h-[120px]"
-                {...register('informacao')}
-              />
-              {errors.informacao && (
-                <p className="text-sm text-destructive">
-                  {errors.informacao.message}
-                </p>
-              )} */}
             </div>
 
             <div className="space-y-2">

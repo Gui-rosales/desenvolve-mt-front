@@ -5,6 +5,7 @@ import {
 } from 'react-hook-form';
 import {
   FormControl,
+  FormField,
   FormItem,
   FormLabel,
   FormMessage,
@@ -35,42 +36,45 @@ export function TextareaInput<T extends FieldValues>({
   ...rest
 }: TextareaInputProps<T>) {
   const {
-    field: { onChange, onBlur, ref },
     fieldState: { error, invalid },
   } = useController({ name, control, rules });
 
   return (
-    <FormItem className={className}>
-      {label && <FormLabel className="text-sm font-medium">{label}</FormLabel>}
-      <FormControl>
-        <div className="relative">
-          {icon && (
-            <div className="absolute left-3 top-1/2 -translate-y-1/2">
-              {icon}
-            </div>
+    <FormField
+      name={name}
+      control={control}
+      rules={rules}
+      render={({ field }) => (
+        <FormItem>
+          {label && (
+            <FormLabel className="text-sm font-medium">{label}</FormLabel>
           )}
-          <Textarea
-            onChange={(e) => {
-              const formattedValue = format
-                ? format(e.target.value)
-                : e.target.value;
-              onChange(formattedValue);
-            }}
-            onBlur={onBlur}
-            placeholder={placeholder}
-            ref={ref}
-            className={cn(
-              icon ? 'pl-10' : '',
-              error && 'border-red-500 focus:ring-red-500'
-            )}
-            {...rest}
-          />
-        </div>
-      </FormControl>
-      {description && !invalid && (
-        <p className="text-sm text-muted-foreground mt-1">{description}</p>
+          <FormControl>
+            <div className="relative">
+              {icon && (
+                <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                  {icon}
+                </div>
+              )}
+              <Textarea
+                placeholder={placeholder}
+                rows={10}
+                className={cn(
+                  icon ? 'pl-10' : '',
+                  error && 'border-red-500 focus:ring-red-500',
+                  className
+                )}
+                {...rest}
+                {...field}
+              />
+            </div>
+          </FormControl>
+          {description && !invalid && (
+            <p className="text-sm text-muted-foreground mt-1">{description}</p>
+          )}
+          <FormMessage className="text-red-500 text-sm mt-1" />
+        </FormItem>
       )}
-      <FormMessage className="text-red-500 text-sm mt-1" />
-    </FormItem>
+    />
   );
 }

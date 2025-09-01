@@ -42,12 +42,12 @@ export function SearchBar({ onSearch, isLoading }: SearchBarProps) {
         >
           <div className="flex gap-2">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
               <TextInput
                 control={form.control}
                 name="nome"
                 placeholder="Digite o nome da pessoa..."
                 disabled={isLoading}
+                icon={<Search className="w-4 h-4" />}
               />
             </div>
             <Button
@@ -74,10 +74,8 @@ export function SearchBar({ onSearch, isLoading }: SearchBarProps) {
               <h3 className="font-medium text-foreground">Filtros avançados</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-1">
-                    Sexo
-                  </label>
                   <SelectInput
+                    label="Sexo"
                     name="sexo"
                     control={form.control}
                     options={[
@@ -89,10 +87,8 @@ export function SearchBar({ onSearch, isLoading }: SearchBarProps) {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-1">
-                    Idade Inicial
-                  </label>
                   <TextInput
+                    label="Idade Inicial"
                     control={form.control}
                     name="faixaIdadeInicial"
                     placeholder="Idade"
@@ -101,10 +97,8 @@ export function SearchBar({ onSearch, isLoading }: SearchBarProps) {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-1">
-                    Idade Final
-                  </label>
                   <TextInput
+                    label="Idade Final"
                     control={form.control}
                     name="faixaIdadeFinal"
                     placeholder="Idade"
@@ -113,10 +107,8 @@ export function SearchBar({ onSearch, isLoading }: SearchBarProps) {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-1">
-                    Status
-                  </label>
                   <SelectInput
+                    label="Status"
                     name="status"
                     control={form.control}
                     options={[
