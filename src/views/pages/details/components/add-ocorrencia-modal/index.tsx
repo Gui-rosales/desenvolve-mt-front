@@ -42,7 +42,7 @@ export function AddOcorrenciaModal({ ocoId }: AddOcorrenciaModalProps) {
       onOpenChange={setOpen}
     >
       <DialogTrigger asChild>
-        <Button className="w-full sm:w-auto cursor-pointer">
+        <Button className="w-full sm:w-auto cursor-pointer" data-testid="add-ocorrencia-button">
           <Plus className="w-4 h-4 mr-2" />
           Registrar Informação
         </Button>
@@ -63,6 +63,7 @@ export function AddOcorrenciaModal({ ocoId }: AddOcorrenciaModalProps) {
                 control={form.control}
                 placeholder="Descreva qualquer informação relevante que possa ajudar na localização..."
                 className="min-h-[120px]"
+                data-testid="descricao-textarea"
               />
               {/* <Textarea
                 id="informacao"
@@ -86,6 +87,7 @@ export function AddOcorrenciaModal({ ocoId }: AddOcorrenciaModalProps) {
                 control={form.control}
                 placeholder="Descreva qualquer informação relevante que possa ajudar na localização..."
                 className="min-h-[120px]"
+                data-testid="informacao-textarea"
               />
               {/* <Textarea
                 id="informacao"
@@ -116,6 +118,7 @@ export function AddOcorrenciaModal({ ocoId }: AddOcorrenciaModalProps) {
                     variant="outline"
                     id="date"
                     className="w-48 justify-between font-normal"
+                    data-testid="date-picker-button"
                   >
                     {form.getValues('data')
                       ? form.getValues('data').toLocaleDateString()
@@ -157,6 +160,7 @@ export function AddOcorrenciaModal({ ocoId }: AddOcorrenciaModalProps) {
                   onChange={handleFileChange}
                   className="hidden"
                   id="file-upload"
+                  data-testid="file-upload-input"
                 />
                 <label
                   htmlFor="file-upload"
@@ -202,12 +206,14 @@ export function AddOcorrenciaModal({ ocoId }: AddOcorrenciaModalProps) {
                 type="button"
                 variant="outline"
                 onClick={() => setOpen(false)}
+                data-testid="cancel-button"
               >
                 Cancelar
               </Button>
               <Button
                 type="submit"
                 disabled={mutation.isPending}
+                data-testid="submit-button"
               >
                 {mutation.isPending ? 'Enviando...' : 'Registrar'}
               </Button>

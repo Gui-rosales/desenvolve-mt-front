@@ -13,7 +13,7 @@ export function PersonDetails({ person }: PersonDetailsProps) {
   const statusColor = getStatusColor(person);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-testid="person-details">
       {/* Card Principal - Informações da Pessoa */}
       <Card>
         <CardContent className="p-6">

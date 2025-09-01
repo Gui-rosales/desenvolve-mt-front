@@ -48,6 +48,7 @@ export function SearchBar({ onSearch, isLoading }: SearchBarProps) {
                 name="nome"
                 placeholder="Digite o nome da pessoa..."
                 disabled={isLoading}
+                data-testid="search-input"
               />
             </div>
             <Button
@@ -56,6 +57,7 @@ export function SearchBar({ onSearch, isLoading }: SearchBarProps) {
               size="lg"
               onClick={() => setShowFilters(!showFilters)}
               className="px-4"
+              data-testid="filter-toggle-button"
             >
               <Filter className="w-4 h-4" />
             </Button>
@@ -64,6 +66,7 @@ export function SearchBar({ onSearch, isLoading }: SearchBarProps) {
               size="lg"
               disabled={isLoading}
               className="px-8"
+              data-testid="search-button"
             >
               {isLoading ? 'Buscando...' : 'Buscar'}
             </Button>
@@ -86,6 +89,7 @@ export function SearchBar({ onSearch, isLoading }: SearchBarProps) {
                     ]}
                     placeholder="Selecione o sexo"
                     disabled={isLoading}
+                    data-testid="sexo-select"
                   />
                 </div>
                 <div>
@@ -98,6 +102,7 @@ export function SearchBar({ onSearch, isLoading }: SearchBarProps) {
                     placeholder="Idade"
                     type="number"
                     disabled={isLoading}
+                    data-testid="idade-inicial-input"
                   />
                 </div>
                 <div>
@@ -110,6 +115,7 @@ export function SearchBar({ onSearch, isLoading }: SearchBarProps) {
                     placeholder="Idade"
                     type="number"
                     disabled={isLoading}
+                    data-testid="idade-final-input"
                   />
                 </div>
                 <div>
@@ -125,6 +131,7 @@ export function SearchBar({ onSearch, isLoading }: SearchBarProps) {
                     ]}
                     placeholder="Selecione o status"
                     disabled={isLoading}
+                    data-testid="status-select"
                   />
                 </div>
               </div>

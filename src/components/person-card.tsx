@@ -15,7 +15,10 @@ export function PersonCard({ person }: PersonCardProps) {
 
   return (
     <Link to={`/pessoa/${person.id}`}>
-      <Card className="hover:shadow-lg transition-all duration-200 hover:scale-[1.02] cursor-pointer group p-0">
+      <Card
+        className="hover:shadow-lg transition-all duration-200 hover:scale-[1.02] cursor-pointer group p-0"
+        data-testid="person-card"
+      >
         <CardContent className="xl:min-h-[450px] xl:max-h-[450px] p-0">
           <div className="w-full aspect-[4/4] relative overflow-hidden rounded-t-lg">
             <img
