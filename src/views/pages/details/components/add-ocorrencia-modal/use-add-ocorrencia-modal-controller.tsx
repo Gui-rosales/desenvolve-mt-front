@@ -3,6 +3,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ocorrenciaSchema, type OcorrenciaFormData } from './schema';
+import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 export function useAddOcorrenciaModalController({ ocoId }: { ocoId: number }) {
   const [open, setOpen] = useState(false);
@@ -10,6 +12,8 @@ export function useAddOcorrenciaModalController({ ocoId }: { ocoId: number }) {
   const [files, setFiles] = useState<File[]>([]);
 
   const mutation = useRegisterOcorrencia();
+
+  const queryClient = useQueryClient();
 
   const form = useForm<OcorrenciaFormData>({
     resolver: zodResolver(ocorrenciaSchema),
@@ -34,8 +38,11 @@ export function useAddOcorrenciaModalController({ ocoId }: { ocoId: number }) {
       form.reset();
       setFiles([]);
       setOpen(false);
-    } catch (error) {
+      queryClient.invalidateQueries({ queryKey: ['get-ocorrencias', ocoId] });
+      toast.success('Informação registrada com sucesso');
+    } catch (error: any) {
       console.error('Erro ao registrar ocorrência:', error);
+      toast.error('Erro ao registrar ocorrência' + error.message);
     }
   });
 

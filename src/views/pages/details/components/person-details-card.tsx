@@ -112,7 +112,6 @@ export function PersonDetails({ person }: PersonDetailsProps) {
       {/* Informações Adicionais e Vestimentas */}
       {person.ultimaOcorrencia?.ocorrenciaEntrevDesapDTO && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Informações Adicionais */}
           {person.ultimaOcorrencia.ocorrenciaEntrevDesapDTO.informacao && (
             <Card>
               <CardHeader>
