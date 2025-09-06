@@ -1,34 +1,14 @@
 import { defineConfig, devices } from '@playwright/test';
-
 import { config } from 'dotenv';
 
 config({
-  path: '.env.local',
+  path: '.env.test',
 });
 
+const BASE_URL = 'http://localhost:5173';
 
-/* Use process.env.PORT by default and fallback to port 3000 */
-const PORT = process.env.PORT || 5173;
-
-/**
- * Set webServer.url and use.baseURL with the location
- * of the WebServer respecting the correct set port
- */
-const baseURL = `http://localhost:${PORT}`;
-
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
-
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
 export default defineConfig({
-  testDir: './tests',
+  testDir: './tests/e2e',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -39,25 +19,23 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
+  /* Global setup and teardown */
+  globalSetup: './tests/setup/global-setup.ts',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL,
+    baseURL: BASE_URL,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-  },
 
-  timeout: 240 * 1000, // 120 seconds
-  expect: {
-    timeout: 240 * 1000,
+    headless: true,
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'e2e',
-      testMatch: /e2e\/.*.test.ts/,
+      name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
 
@@ -93,9 +71,10 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://localhost:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
+  webServer: {
+    command: 'npm run dev',
+    url: 'http://localhost:5173',
+    reuseExistingServer: !process.env.CI,
+    timeout: 120 * 1000,
+  },
 });
