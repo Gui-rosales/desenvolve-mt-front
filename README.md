@@ -14,38 +14,109 @@
 
 ### 📋 Pré-requisitos
 - Docker instalado no sistema
+- Docker Compose instalado no sistema
 
 ### 🔧 Como Executar
 
-#### Opção 1: Build da Imagem Docker
+O projeto possui dois ambientes configurados: **Desenvolvimento** e **Produção**. Cada ambiente possui sua própria configuração Docker e arquivo de variáveis de ambiente.
+
+#### 🛠️ Ambiente de Desenvolvimento
+
+Para executar em modo de desenvolvimento (com hot reload):
+
 ```bash
-docker build -t desenvolve-mt .
-docker run -p 80:80 desenvolve-mt
+# Usando script do package.json (Recomendado)
+npm run docker:dev
+
+# Ou usando docker compose diretamente
+docker compose -f docker/development/docker-compose.dev.yml up --build
 ```
 
-#### Opção 2: Docker Compose (Recomendado)
+**Acesso:** http://localhost:5173
+
+#### 🚀 Ambiente de Produção
+
+Para executar em modo de produção (otimizado com Nginx):
+
 ```bash
-docker compose up --build
+# Usando script do package.json (Recomendado)
+npm run docker:prod
+
+# Ou usando docker compose diretamente
+docker compose -f docker/production/docker-compose.yml up --build
+```
+
+**Acesso:** http://localhost:80
+
+### 🛑 Parando os Serviços
+
+```bash
+# Parar ambiente de desenvolvimento
+npm run docker:dev:down
+
+# Parar ambiente de produção
+npm run docker:prod:down
 ```
 
 ### 🌍 Variáveis de Ambiente
 
-Antes de executar o projeto, você deve criar um arquivo `.env` na raiz do repositório com as seguintes variáveis:
+**⚠️ IMPORTANTE:** Antes de executar o projeto, você deve criar os arquivos de variáveis de ambiente na raiz do repositório:
 
+#### Para Desenvolvimento (.env.development)
 ```env
+VITE_NODE_ENV=development
 VITE_API_URL=https://api-url/v1
 ```
 
-**⚠️ Importante:** 
-- O arquivo `.env` deve estar na raiz do projeto
-- Substitua `https://api-url/v1` pela URL real da sua API
+#### Para Produção (.env.production)
+```env
+VITE_NODE_ENV=production
+VITE_API_URL=https://api-url/v1
+```
 
-### 🌐 Acesso à Aplicação
-Após o build do container, a aplicação estará disponível em:
-**http://localhost:80**
+**📝 Notas sobre as variáveis:**
+- Substitua `https://api-url/v1` pela URL real da sua API
+- Cada ambiente utiliza seu respectivo arquivo de variáveis
+- Os arquivos devem estar na raiz do projeto (mesmo nível do package.json)
+
+#### 🧪 Uso de Mock (MSW)
+
+Para utilizar mocks das rotas da API durante o desenvolvimento, adicione a variável `NODE_ENV=test` ao seu arquivo de variáveis de ambiente:
+
+```env
+# Exemplo para .env.development com mock
+VITE_NODE_ENV=test
+VITE_API_URL=https://api-url/v1
+```
+
+**⚠️ Disclaimer sobre MSW:**
+- Quando utilizar o MSW (Mock Service Worker), caso o mesmo não carregue corretamente, realize a limpeza dos cookies do navegador
+- Existe um ticket aberto para solução do problema relacionado aos cookies, mas ainda não foi corrigido
+- Esta é uma solução temporária até que o problema seja resolvido
+
+### 📁 Estrutura Docker
+
+```
+docker/
+├── development/
+│   ├── docker-compose.dev.yml
+│   └── Dockerfile.dev
+└── production/
+    ├── docker-compose.yml
+    ├── Dockerfile
+    └── nginx.conf
+```
+
+### 🌐 Acesso às Aplicações
+
+- **Desenvolvimento:** http://localhost:5173 (com hot reload)
+- **Produção:** http://localhost:80 (otimizado com Nginx)
 
 ---
 
-## 📝 Notas
-- Certifique-se de que a porta 80 não esteja sendo utilizada por outros serviços
-- Para parar a aplicação, use `Ctrl+C` ou `docker compose down`
+## 📝 Notas Importantes
+
+- **Desenvolvimento:** Ideal para desenvolvimento com hot reload e debug
+- **Produção:** Otimizado para performance com Nginx e build minificado
+- Certifique-se de que as portas 5173 (dev) e 80 (prod) não estejam sendo utilizadas
+- Para parar qualquer ambiente, use `Ctrl+C` ou os comandos de down mencionados acima
