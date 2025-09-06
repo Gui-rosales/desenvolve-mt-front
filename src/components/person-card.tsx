@@ -16,7 +16,7 @@ export function PersonCard({ person }: PersonCardProps) {
   return (
     <Link to={`/pessoa/${person.id}`}>
       <Card className="hover:shadow-lg transition-all duration-200 hover:scale-[1.02] cursor-pointer group p-0">
-        <CardContent className="xl:min-h-[450px] xl:max-h-[450px] p-0">
+        <CardContent className="md:min-h-[525px] md:max-h-[550px] p-0">
           <div className="w-full aspect-[4/4] relative overflow-hidden rounded-t-lg">
             <img
               src={
@@ -58,7 +58,7 @@ export function PersonCard({ person }: PersonCardProps) {
                 {person.ultimaOcorrencia.localDesaparecimentoConcat && (
                   <div className="flex items-start gap-2 text-muted-foreground">
                     <MapPin className="w-3 h-3 mt-0.5 flex-shrink-0" />
-                    <span className="line-clamp-2">
+                    <span className="line-clamp-1">
                       {person.ultimaOcorrencia.localDesaparecimentoConcat}
                     </span>
                   </div>
