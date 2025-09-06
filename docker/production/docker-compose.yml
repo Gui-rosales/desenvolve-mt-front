@@ -1,23 +1,17 @@
-version: '3.8'
-
 services:
   app:
     build:
-      context: .
-      dockerfile: Dockerfile
-      target: runner
+      context: ../..
+      dockerfile: docker/production/Dockerfile
       args:
         NODE_ENV: production
         VITE_API_URL: ${VITE_API_URL:-https://abitus-api.geia.vip/v1}
+    env_file:
+      - ../../.env.production
     ports:
       - "80:80"
     container_name: desafio-mt-app
     restart: unless-stopped
-    env_file:
-      - .env
-    environment:
-      - NODE_ENV=production
-      - VITE_API_URL=${VITE_API_URL:-https://abitus-api.geia.vip/v1}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/"]
       interval: 30s

@@ -1,0 +1,19 @@
+services:
+  app:
+    build:
+      context: ../..
+      dockerfile: docker/development/Dockerfile.dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ../../src:/app/src
+      - ../../public:/app/public
+      - /app/node_modules
+    env_file:
+      - ../../.env.development
+    networks:
+      - dev-network
+
+networks:
+  dev-network:
+    driver: bridge
