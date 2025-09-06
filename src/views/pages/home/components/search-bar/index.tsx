@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { Search, Filter } from 'lucide-react';
+import { Search, Filter, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { searchPessoasRequest } from '@/app/services/pessoa/search-pessoas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { searchBarSchema, type SearchBarSchema } from './schema';
+import { searchBarSchema, type SearchBarSchemaType } from './schema';
 import { TextInput } from '@/components/text-input';
 import { SelectInput } from '@/components/select-input';
 import { Form } from '@/components/ui/form';
@@ -16,22 +16,47 @@ interface SearchBarProps {
 
 export function SearchBar({ onSearch, isLoading }: SearchBarProps) {
   const [showFilters, setShowFilters] = useState(false);
-  const form = useForm<SearchBarSchema>({
+  const form = useForm<SearchBarSchemaType>({
     resolver: zodResolver(searchBarSchema),
     defaultValues: {
       nome: '',
-      faixaIdadeInicial: 0,
-      faixaIdadeFinal: 0,
+      faixaIdadeInicial: '',
+      faixaIdadeFinal: '',
       sexo: undefined,
       status: undefined,
     },
   });
 
   const handleSubmitForm = form.handleSubmit((data) => {
-    onSearch({
-      ...data,
-    });
+    const processedData: searchPessoasRequest = {
+      nome: data.nome,
+      faixaIdadeInicial: data.faixaIdadeInicial
+        ? typeof data.faixaIdadeInicial === 'string'
+          ? Number(data.faixaIdadeInicial)
+          : data.faixaIdadeInicial
+        : undefined,
+      faixaIdadeFinal: data.faixaIdadeFinal
+        ? typeof data.faixaIdadeFinal === 'string'
+          ? Number(data.faixaIdadeFinal)
+          : data.faixaIdadeFinal
+        : undefined,
+      sexo: data.sexo,
+      status: data.status,
+    };
+
+    onSearch(processedData);
   });
+
+  const handleClearFilters = () => {
+    form.reset({
+      nome: '',
+      faixaIdadeInicial: '',
+      faixaIdadeFinal: '',
+      sexo: undefined,
+      status: undefined,
+    });
+    onSearch({});
+  };
 
   return (
     <div className="w-full max-w-4xl mx-auto">
@@ -58,6 +83,16 @@ export function SearchBar({ onSearch, isLoading }: SearchBarProps) {
               className="px-4"
             >
               <Filter className="w-4 h-4" />
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="lg"
+              onClick={handleClearFilters}
+              disabled={isLoading}
+              className="px-4"
+            >
+              <X className="w-4 h-4" />
             </Button>
             <Button
               type="submit"
