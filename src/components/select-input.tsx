@@ -31,6 +31,7 @@ type SelectInputProps<T extends FieldValues> = UseControllerProps<T> & {
   isRequired?: boolean;
   disabled?: boolean;
   className?: string;
+  'data-testid'?: string;
 };
 
 export function SelectInput<T extends FieldValues>({
@@ -43,6 +44,7 @@ export function SelectInput<T extends FieldValues>({
   disabled = false,
   description,
   isRequired = false,
+  'data-testid': dataTestId,
 }: SelectInputProps<T>) {
   const {
     field: { onChange },
@@ -66,7 +68,7 @@ export function SelectInput<T extends FieldValues>({
               disabled={disabled}
               {...field}
             >
-              <SelectTrigger className="w-full">
+              <SelectTrigger className="w-full" data-testid={dataTestId}>
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
               <SelectContent className="w-full">

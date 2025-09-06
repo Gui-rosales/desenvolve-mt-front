@@ -22,6 +22,7 @@ type TextInputProps<T extends FieldValues> = UseControllerProps<T> & {
   icon?: ReactNode;
   className?: string;
   format?: (value: string) => string;
+  'data-testid'?: string;
 };
 
 export function TextInput<T extends FieldValues>({
@@ -35,6 +36,7 @@ export function TextInput<T extends FieldValues>({
   icon,
   className,
   format,
+  'data-testid': dataTestId,
   ...rest
 }: TextInputProps<T>) {
   const {
@@ -65,6 +67,7 @@ export function TextInput<T extends FieldValues>({
                   icon ? 'pl-10' : '',
                   error && 'border-red-500 focus:ring-red-500'
                 )}
+                data-testid={dataTestId}
                 {...rest}
                 {...field}
                 value={format ? format(field.value) : field.value}

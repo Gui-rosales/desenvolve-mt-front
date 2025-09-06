@@ -75,6 +75,7 @@ export function DetailPage() {
           <Button
             variant="outline"
             size="sm"
+            data-testid="back-button"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Voltar à busca
@@ -88,7 +89,7 @@ export function DetailPage() {
 
       {/* Additional Information */}
       {ocoId && (
-        <div className="space-y-4">
+        <div className="space-y-4" data-testid="community-info-section">
           <h2 className="text-2xl font-semibold text-foreground">
             Informações da Comunidade
           </h2>

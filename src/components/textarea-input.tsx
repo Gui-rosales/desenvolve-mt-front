@@ -21,6 +21,7 @@ type TextareaInputProps<T extends FieldValues> = UseControllerProps<T> & {
   icon?: ReactNode;
   className?: string;
   format?: (value: string) => string;
+  'data-testid'?: string;
 };
 
 export function TextareaInput<T extends FieldValues>({
@@ -33,6 +34,7 @@ export function TextareaInput<T extends FieldValues>({
   icon,
   className,
   format,
+  'data-testid': dataTestId,
   ...rest
 }: TextareaInputProps<T>) {
   const {
@@ -64,6 +66,7 @@ export function TextareaInput<T extends FieldValues>({
                   error && 'border-red-500 focus:ring-red-500',
                   className
                 )}
+                data-testid={dataTestId}
                 {...rest}
                 {...field}
               />

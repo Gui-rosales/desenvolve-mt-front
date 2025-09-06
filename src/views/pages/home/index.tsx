@@ -61,7 +61,7 @@ export function HomePage() {
         </p>
 
         <div className="flex items-center justify-center gap-8 pt-4">
-          <div className="text-center">
+          <div className="text-center" data-testid="desaparecidos-counter">
             <div className="text-2xl font-bold text-primary">
               {pessoasCounter?.quantPessoasDesaparecidas.toLocaleString()}
             </div>
@@ -69,7 +69,7 @@ export function HomePage() {
               Pessoas Desaparecidas
             </div>
           </div>
-          <div className="text-center">
+          <div className="text-center" data-testid="encontrados-counter">
             <div className="text-2xl font-bold text-primary">
               {pessoasCounter?.quantPessoasEncontradas.toLocaleString()}
             </div>
@@ -112,7 +112,7 @@ export function HomePage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" data-testid="person-grid">
               {allPeople.map((person) => (
                 <PersonCard
                   key={person.id}
