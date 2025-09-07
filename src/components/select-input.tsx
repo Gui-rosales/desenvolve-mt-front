@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { cn } from '@/lib/utils';
 
 interface Option {
   label: string;
@@ -32,6 +33,7 @@ type SelectInputProps<T extends FieldValues> = UseControllerProps<T> & {
   disabled?: boolean;
   className?: string;
   'data-testid'?: string;
+  'aria-describedby'?: string;
 };
 
 export function SelectInput<T extends FieldValues>({
@@ -45,6 +47,7 @@ export function SelectInput<T extends FieldValues>({
   description,
   isRequired = false,
   'data-testid': dataTestId,
+  'aria-describedby': ariaDescribedBy,
 }: SelectInputProps<T>) {
   const {
     field: { onChange },
@@ -59,7 +62,10 @@ export function SelectInput<T extends FieldValues>({
       render={({ field }) => (
         <FormItem>
           {label && (
-            <FormLabel className="text-sm font-medium">{label}</FormLabel>
+            <FormLabel className="text-sm font-medium">
+              {label}
+              {isRequired && <span className="text-destructive ml-1" aria-label="obrigatório">*</span>}
+            </FormLabel>
           )}
           <FormControl>
             <Select
@@ -68,7 +74,17 @@ export function SelectInput<T extends FieldValues>({
               disabled={disabled}
               {...field}
             >
-              <SelectTrigger className="w-full" data-testid={dataTestId}>
+              <SelectTrigger 
+                className="w-full" 
+                data-testid={dataTestId}
+                aria-required={isRequired}
+                aria-invalid={!!error}
+                aria-describedby={cn(
+                  description && !error ? `${name}-description` : undefined,
+                  error ? `${name}-error` : undefined,
+                  ariaDescribedBy
+                )}
+              >
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
               <SelectContent className="w-full">
@@ -84,9 +100,18 @@ export function SelectInput<T extends FieldValues>({
             </Select>
           </FormControl>
           {description && !error && (
-            <p className="text-sm text-muted">{description}</p>
+            <p 
+              className="text-sm text-muted-foreground" 
+              id={`${name}-description`}
+            >
+              {description}
+            </p>
           )}
-          <FormMessage>{error?.message}</FormMessage>
+          <FormMessage 
+            id={`${name}-error`}
+          >
+            {error?.message}
+          </FormMessage>
         </FormItem>
       )}
     />

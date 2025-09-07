@@ -5,6 +5,7 @@ import { PersonDetails } from './components/person-details-card';
 import { OcorrenciaList } from './components/ocorrencia-list-card';
 import { ErrorDisplay } from '@/components/error-display';
 import { AddOcorrenciaModal } from './components/add-ocorrencia-modal';
+import { SkipLinks } from '@/components/skip-links';
 import { useDetailsController } from './use-details-controller';
 
 export function DetailPage() {
@@ -22,21 +23,23 @@ export function DetailPage() {
   if (isLoadingPerson) {
     return (
       <div className="space-y-6">
+        <SkipLinks />
         <div className="flex items-center gap-4">
           <Link to="/">
             <Button
               variant="outline"
               size="sm"
+              aria-label="Voltar para a página inicial"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
               Voltar
             </Button>
           </Link>
         </div>
 
-        <div className="flex items-center justify-center py-12">
+        <div className="flex items-center justify-center py-12" role="status" aria-live="polite">
           <div className="text-center">
-            <Loader2 className="w-8 h-8 animate-spin mx-auto text-primary mb-4" />
+            <Loader2 className="w-8 h-8 animate-spin mx-auto text-primary mb-4" aria-hidden="true" />
             <p className="text-muted-foreground">Carregando informações...</p>
           </div>
         </div>
@@ -47,13 +50,15 @@ export function DetailPage() {
   if (isErrorPerson || !person) {
     return (
       <div className="space-y-6">
+        <SkipLinks />
         <div className="flex items-center gap-4">
           <Link to="/">
             <Button
               variant="outline"
               size="sm"
+              aria-label="Voltar para a página inicial"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
               Voltar
             </Button>
           </Link>
@@ -69,28 +74,33 @@ export function DetailPage() {
 
   return (
     <div className="space-y-6">
+      <SkipLinks />
+      
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <header className="flex items-center justify-between">
         <Link to="/">
           <Button
             variant="outline"
             size="sm"
             data-testid="back-button"
+            aria-label="Voltar para a página de busca"
           >
-            <ArrowLeft className="w-4 h-4 mr-2" />
+            <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
             Voltar à busca
           </Button>
         </Link>
 
         {ocoId && <AddOcorrenciaModal ocoId={ocoId} />}
-      </div>
+      </header>
 
-      <PersonDetails person={person} />
+      <main id="main-content">
+        <PersonDetails person={person} />
+      </main>
 
       {/* Additional Information */}
       {ocoId && (
-        <div className="space-y-4" data-testid="community-info-section">
-          <h2 className="text-2xl font-semibold text-foreground">
+        <section className="space-y-4" data-testid="community-info-section" aria-labelledby="community-info-heading">
+          <h2 id="community-info-heading" className="text-2xl font-semibold text-foreground">
             Informações da Comunidade
           </h2>
           <p className="text-muted-foreground">
@@ -106,7 +116,7 @@ export function DetailPage() {
               isLoading={isLoadingOcorrencias}
             />
           )}
-        </div>
+        </section>
       )}
     </div>
   );

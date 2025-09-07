@@ -42,15 +42,26 @@ export function AddOcorrenciaModal({ ocoId }: AddOcorrenciaModalProps) {
       onOpenChange={setOpen}
     >
       <DialogTrigger asChild>
-        <Button className="w-full sm:w-auto cursor-pointer" data-testid="add-ocorrencia-button">
-          <Plus className="w-4 h-4 mr-2" />
+        <Button 
+          className="w-full sm:w-auto cursor-pointer" 
+          data-testid="add-ocorrencia-button"
+          aria-label="Abrir modal para registrar nova informação sobre a pessoa desaparecida"
+        >
+          <Plus className="w-4 h-4 mr-2" aria-hidden="true" />
           Registrar Informação
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent 
+        className="sm:max-w-[600px]"
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+      >
         <DialogHeader>
-          <DialogTitle>Registrar Nova Informação</DialogTitle>
+          <DialogTitle id="modal-title">Registrar Nova Informação</DialogTitle>
         </DialogHeader>
+        <p id="modal-description" className="sr-only">
+          Formulário para registrar informações adicionais sobre a pessoa desaparecida
+        </p>
         <Form {...form}>
           <form
             onSubmit={submitData}
@@ -58,18 +69,19 @@ export function AddOcorrenciaModal({ ocoId }: AddOcorrenciaModalProps) {
           >
             <div className="space-y-2">
               <TextareaInput
-                label="Descrição da Informação *"
+                label="Descrição da Informação"
                 name="descricao"
                 control={form.control}
-                placeholder="Descreva qualquer informação relevante que possa ajudar na localização..."
+                placeholder="Ex: Informação adicionada pela comunidade"
                 className="min-h-[120px]"
                 data-testid="descricao-textarea"
+                required={true}
               />
             </div>
 
             <div className="">
               <TextareaInput
-                label="Informação sobre a pessoa desaparecida *"
+                label="Informação sobre a pessoa desaparecida"
                 name="informacao"
                 control={form.control}
                 placeholder="Descreva qualquer informação relevante que possa ajudar na localização..."
@@ -95,11 +107,14 @@ export function AddOcorrenciaModal({ ocoId }: AddOcorrenciaModalProps) {
                     id="date"
                     className="w-48 justify-between font-normal"
                     data-testid="date-picker-button"
+                    aria-label="Selecionar data de avistamento"
+                    aria-expanded={dateModal}
+                    aria-haspopup="dialog"
                   >
                     {form.getValues('data')
                       ? form.getValues('data').toLocaleDateString()
                       : 'Seleciona uma data'}
-                    <ChevronDownIcon />
+                    <ChevronDownIcon aria-hidden="true" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent
@@ -126,7 +141,7 @@ export function AddOcorrenciaModal({ ocoId }: AddOcorrenciaModalProps) {
             </div>
 
             <div className="space-y-4">
-              <Label>Anexos (opcional)</Label>
+              <Label htmlFor="file-upload">Anexos (opcional)</Label>
 
               <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
                 <input
@@ -137,16 +152,17 @@ export function AddOcorrenciaModal({ ocoId }: AddOcorrenciaModalProps) {
                   className="hidden"
                   id="file-upload"
                   data-testid="file-upload-input"
+                  aria-describedby="file-upload-description"
                 />
                 <label
                   htmlFor="file-upload"
                   className="cursor-pointer flex flex-col items-center gap-2"
                 >
-                  <Upload className="w-8 h-8 text-muted-foreground" />
+                  <Upload className="w-8 h-8 text-muted-foreground" aria-hidden="true" />
                   <span className="text-sm text-muted-foreground">
                     Clique para selecionar arquivos
                   </span>
-                  <span className="text-xs text-muted-foreground">
+                  <span id="file-upload-description" className="text-xs text-muted-foreground">
                     Imagens, PDF, DOC (máx. 10MB cada)
                   </span>
                 </label>
@@ -155,20 +171,22 @@ export function AddOcorrenciaModal({ ocoId }: AddOcorrenciaModalProps) {
               {files.length > 0 && (
                 <div className="space-y-2">
                   <Label>Arquivos selecionados:</Label>
-                  <div className="space-y-2">
+                  <div className="space-y-2" role="list" aria-label="Lista de arquivos selecionados">
                     {files.map((file, index) => (
                       <div
                         key={index}
                         className="flex items-center justify-between p-2 bg-muted rounded-md"
+                        role="listitem"
                       >
-                        <span className="text-sm truncate">{file.name}</span>
+                        <span className="text-sm truncate" aria-label={`Arquivo: ${file.name}`}>{file.name}</span>
                         <Button
                           type="button"
                           variant="ghost"
                           size="sm"
                           onClick={() => removeFile(index)}
+                          aria-label={`Remover arquivo ${file.name}`}
                         >
-                          <X className="w-4 h-4" />
+                          <X className="w-4 h-4" aria-hidden="true" />
                         </Button>
                       </div>
                     ))}
@@ -183,6 +201,7 @@ export function AddOcorrenciaModal({ ocoId }: AddOcorrenciaModalProps) {
                 variant="outline"
                 onClick={() => setOpen(false)}
                 data-testid="cancel-button"
+                aria-label="Cancelar e fechar modal"
               >
                 Cancelar
               </Button>
@@ -190,6 +209,7 @@ export function AddOcorrenciaModal({ ocoId }: AddOcorrenciaModalProps) {
                 type="submit"
                 disabled={mutation.isPending}
                 data-testid="submit-button"
+                aria-label={mutation.isPending ? 'Enviando informações...' : 'Registrar informações'}
               >
                 {mutation.isPending ? 'Enviando...' : 'Registrar'}
               </Button>

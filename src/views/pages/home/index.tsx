@@ -3,6 +3,7 @@ import { SearchBar } from './components/search-bar';
 import { PersonCard } from '@/components/person-card';
 import { SkeletonCard } from '@/components/skeleton-card';
 import { ErrorDisplay } from '@/components/error-display';
+import { SkipLinks } from '@/components/skip-links';
 import { useHomeController } from './use-home-controller';
 
 export function HomePage() {
@@ -43,10 +44,12 @@ export function HomePage() {
 
   return (
     <div className="space-y-8">
+      <SkipLinks />
+      
       {/* Hero Section */}
-      <div className="text-center space-y-6 py-8">
+      <header className="text-center space-y-6 py-8" id="main-content">
         <div className="flex items-center justify-center gap-3 mb-4">
-          <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center">
+          <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center" aria-hidden="true">
             <Heart className="w-8 h-8 text-primary-foreground" />
           </div>
         </div>
@@ -60,9 +63,9 @@ export function HomePage() {
           registro de informações sobre pessoas desaparecidas
         </p>
 
-        <div className="flex items-center justify-center gap-8 pt-4">
+        <div className="flex items-center justify-center gap-8 pt-4" role="region" aria-label="Estatísticas de pessoas desaparecidas">
           <div className="text-center" data-testid="desaparecidos-counter">
-            <div className="text-2xl font-bold text-primary">
+            <div className="text-2xl font-bold text-primary" aria-label={`${pessoasCounter?.quantPessoasDesaparecidas.toLocaleString()} pessoas desaparecidas`}>
               {pessoasCounter?.quantPessoasDesaparecidas.toLocaleString()}
             </div>
             <div className="text-sm text-muted-foreground">
@@ -70,7 +73,7 @@ export function HomePage() {
             </div>
           </div>
           <div className="text-center" data-testid="encontrados-counter">
-            <div className="text-2xl font-bold text-primary">
+            <div className="text-2xl font-bold text-primary" aria-label={`${pessoasCounter?.quantPessoasEncontradas.toLocaleString()} pessoas encontradas`}>
               {pessoasCounter?.quantPessoasEncontradas.toLocaleString()}
             </div>
             <div className="text-sm text-muted-foreground">
@@ -78,23 +81,27 @@ export function HomePage() {
             </div>
           </div>
         </div>
-      </div>
+      </header>
 
       {/* Search Section */}
-      <SearchBar
-        onSearch={handleSearch}
-        isLoading={isLoading}
-      />
+      <section id="search-section" aria-labelledby="search-heading">
+        <h2 id="search-heading" className="sr-only">Busca de pessoas desaparecidas</h2>
+        <SearchBar
+          onSearch={handleSearch}
+          isLoading={isLoading}
+        />
+      </section>
 
       {/* Results Section */}
-      <div className="space-y-6">
+      <section id="results-section" className="space-y-6" aria-labelledby="results-heading">
+        <h2 id="results-heading" className="sr-only">Resultados da busca</h2>
         {isLoading && allPeople.length === 0 ? (
-          <div className="space-y-4">
+          <div className="space-y-4" role="status" aria-live="polite">
             <div className="text-center">
-              <Loader2 className="w-8 h-8 animate-spin mx-auto text-primary" />
+              <Loader2 className="w-8 h-8 animate-spin mx-auto text-primary" aria-hidden="true" />
               <p className="text-muted-foreground mt-2">Carregando...</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" aria-label="Carregando resultados">
               {Array.from({ length: 8 }).map((_, index) => (
                 <SkeletonCard key={index} />
               ))}
@@ -104,15 +111,20 @@ export function HomePage() {
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Users className="w-5 h-5 text-muted-foreground" />
-                <span className="text-muted-foreground">
+                <Users className="w-5 h-5 text-muted-foreground" aria-hidden="true" />
+                <span className="text-muted-foreground" aria-live="polite">
                   {allPeople.length} de {totalElements.toLocaleString()}{' '}
                   resultados
                 </span>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" data-testid="person-grid">
+            <div 
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" 
+              data-testid="person-grid"
+              role="grid"
+              aria-label="Lista de pessoas desaparecidas"
+            >
               {allPeople.map((person) => (
                 <PersonCard
                   key={person.id}
@@ -125,10 +137,12 @@ export function HomePage() {
             <div
               ref={ref}
               className="flex justify-center py-8"
+              role="status"
+              aria-live="polite"
             >
               {isFetchingNextPage && (
                 <div className="flex items-center gap-2">
-                  <Loader2 className="w-5 h-5 animate-spin text-primary" />
+                  <Loader2 className="w-5 h-5 animate-spin text-primary" aria-hidden="true" />
                   <span className="text-muted-foreground">
                     Carregando mais resultados...
                   </span>
@@ -143,8 +157,8 @@ export function HomePage() {
           </div>
         ) : (
           !isLoading && (
-            <div className="text-center py-12">
-              <Users className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+            <div className="text-center py-12" role="status" aria-live="polite">
+              <Users className="w-16 h-16 text-muted-foreground mx-auto mb-4" aria-hidden="true" />
               <h3 className="text-xl font-semibold text-foreground mb-2">
                 Nenhum resultado encontrado
               </h3>
@@ -154,7 +168,7 @@ export function HomePage() {
             </div>
           )
         )}
-      </div>
+      </section>
     </div>
   );
 }

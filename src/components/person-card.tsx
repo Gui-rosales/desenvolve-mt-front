@@ -14,8 +14,16 @@ export function PersonCard({ person }: PersonCardProps) {
   const statusColor = getStatusColor(person);
 
   return (
-    <Link to={`/pessoa/${person.id}`}>
-      <Card className="hover:shadow-lg transition-all duration-200 hover:scale-[1.02] cursor-pointer group p-0" data-testid="person-card">
+    <Link 
+      to={`/pessoa/${person.id}`}
+      aria-label={`Ver detalhes de ${person.nome}, ${person.idade} anos, ${person.sexo === 'MASCULINO' ? 'masculino' : 'feminino'}, status: ${statusText}`}
+    >
+      <Card 
+        className="hover:shadow-lg transition-all duration-200 hover:scale-[1.02] cursor-pointer group p-0 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2" 
+        data-testid="person-card"
+        role="article"
+        aria-labelledby={`person-name-${person.id}`}
+      >
         <CardContent className="md:min-h-[525px] md:max-h-[550px] p-0">
           <div className="w-full aspect-[4/4] relative overflow-hidden rounded-t-lg">
             <img
@@ -25,40 +33,53 @@ export function PersonCard({ person }: PersonCardProps) {
               }
               alt={`Foto de ${person.nome}`}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200 rounded-t-lg"
+              loading="lazy"
             />
             <div className="absolute top-3 right-3">
-              <Badge className={statusColor}>{statusText}</Badge>
+              <Badge 
+                className={statusColor}
+                aria-label={`Status: ${statusText}`}
+              >
+                {statusText}
+              </Badge>
             </div>
           </div>
 
           <div className="p-4 space-y-3">
             <div>
-              <h3 className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors">
+              <h3 
+                className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors"
+                id={`person-name-${person.id}`}
+              >
                 {person.nome}
               </h3>
               <div className="flex items-center gap-4 text-sm text-muted-foreground mt-1">
                 <div className="flex items-center gap-1">
-                  <User className="w-3 h-3" />
-                  <span>{person.idade} anos</span>
+                  <User className="w-3 h-3" aria-hidden="true" />
+                  <span aria-label={`Idade: ${person.idade} anos`}>{person.idade} anos</span>
                 </div>
-                <span>{person.sexo === 'MASCULINO' ? 'Masculino' : 'Feminino'}</span>
+                <span aria-label={`Sexo: ${person.sexo === 'MASCULINO' ? 'Masculino' : 'Feminino'}`}>
+                  {person.sexo === 'MASCULINO' ? 'Masculino' : 'Feminino'}
+                </span>
               </div>
             </div>
 
             {person.ultimaOcorrencia && (
-              <div className="space-y-2 text-sm">
+              <div className="space-y-2 text-sm" role="region" aria-label="Informações do desaparecimento">
                 <div className="flex items-center gap-2 text-muted-foreground">
-                  <Calendar className="w-3 h-3" />
+                  <Calendar className="w-3 h-3" aria-hidden="true" />
                   <span>
                     Desaparecimento:{' '}
-                    {formatDate(person.ultimaOcorrencia.dtDesaparecimento)}
+                    <time dateTime={person.ultimaOcorrencia.dtDesaparecimento}>
+                      {formatDate(person.ultimaOcorrencia.dtDesaparecimento)}
+                    </time>
                   </span>
                 </div>
 
                 {person.ultimaOcorrencia.localDesaparecimentoConcat && (
                   <div className="flex items-start gap-2 text-muted-foreground">
-                    <MapPin className="w-3 h-3 mt-0.5 flex-shrink-0" />
-                    <span className="line-clamp-1">
+                    <MapPin className="w-3 h-3 mt-0.5 flex-shrink-0" aria-hidden="true" />
+                    <span className="line-clamp-1" aria-label={`Local do desaparecimento: ${person.ultimaOcorrencia.localDesaparecimentoConcat}`}>
                       {person.ultimaOcorrencia.localDesaparecimentoConcat}
                     </span>
                   </div>
@@ -66,10 +87,12 @@ export function PersonCard({ person }: PersonCardProps) {
 
                 {person.ultimaOcorrencia.dataLocalizacao && (
                   <div className="flex items-center gap-2 text-primary">
-                    <Calendar className="w-3 h-3" />
+                    <Calendar className="w-3 h-3" aria-hidden="true" />
                     <span>
                       Localizada em:{' '}
-                      {formatDate(person.ultimaOcorrencia.dataLocalizacao)}
+                      <time dateTime={person.ultimaOcorrencia.dataLocalizacao}>
+                        {formatDate(person.ultimaOcorrencia.dataLocalizacao)}
+                      </time>
                     </span>
                   </div>
                 )}

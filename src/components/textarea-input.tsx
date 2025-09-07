@@ -22,6 +22,8 @@ type TextareaInputProps<T extends FieldValues> = UseControllerProps<T> & {
   className?: string;
   format?: (value: string) => string;
   'data-testid'?: string;
+  required?: boolean;
+  'aria-describedby'?: string;
 };
 
 export function TextareaInput<T extends FieldValues>({
@@ -35,6 +37,8 @@ export function TextareaInput<T extends FieldValues>({
   className,
   format,
   'data-testid': dataTestId,
+  required = false,
+  'aria-describedby': ariaDescribedBy,
   ...rest
 }: TextareaInputProps<T>) {
   const {
@@ -49,12 +53,15 @@ export function TextareaInput<T extends FieldValues>({
       render={({ field }) => (
         <FormItem>
           {label && (
-            <FormLabel className="text-sm font-medium">{label}</FormLabel>
+            <FormLabel className="text-sm font-medium">
+              {label}
+              {required && <span className="text-destructive ml-1" aria-label="obrigatório">*</span>}
+            </FormLabel>
           )}
           <FormControl>
             <div className="relative">
               {icon && (
-                <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2" aria-hidden="true">
                   {icon}
                 </div>
               )}
@@ -67,15 +74,31 @@ export function TextareaInput<T extends FieldValues>({
                   className
                 )}
                 data-testid={dataTestId}
+                required={required}
+                aria-required={required}
+                aria-invalid={invalid}
+                aria-describedby={cn(
+                  description && !invalid ? `${name}-description` : undefined,
+                  error ? `${name}-error` : undefined,
+                  ariaDescribedBy
+                )}
                 {...rest}
                 {...field}
               />
             </div>
           </FormControl>
           {description && !invalid && (
-            <p className="text-sm text-muted-foreground mt-1">{description}</p>
+            <p 
+              className="text-sm text-muted-foreground mt-1" 
+              id={`${name}-description`}
+            >
+              {description}
+            </p>
           )}
-          <FormMessage className="text-red-500 text-sm mt-1" />
+          <FormMessage 
+            className="text-red-500 text-sm mt-1" 
+            id={`${name}-error`}
+          />
         </FormItem>
       )}
     />

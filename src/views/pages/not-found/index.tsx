@@ -8,7 +8,7 @@ export function NotFoundPage() {
     <div className="min-h-[60vh] flex items-center justify-center">
       <Card className="max-w-md w-full">
         <CardContent className="p-8 text-center">
-          <div className="text-6xl font-bold text-muted-foreground mb-4">
+          <div className="text-6xl font-bold text-muted-foreground mb-4" aria-hidden="true">
             404
           </div>
 
@@ -20,10 +20,10 @@ export function NotFoundPage() {
             A página que você está procurando não existe ou foi movida.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <nav className="flex flex-col sm:flex-row gap-3 justify-center" aria-label="Navegação para páginas principais">
             <Link to="/">
-              <Button className="w-full sm:w-auto">
-                <Home className="w-4 h-4 mr-2" />
+              <Button className="w-full sm:w-auto" aria-label="Ir para a página inicial">
+                <Home className="w-4 h-4 mr-2" aria-hidden="true" />
                 Página inicial
               </Button>
             </Link>
@@ -31,12 +31,13 @@ export function NotFoundPage() {
               <Button
                 variant="outline"
                 className="w-full sm:w-auto bg-transparent"
+                aria-label="Ir para a página de busca de pessoas"
               >
-                <Search className="w-4 h-4 mr-2" />
+                <Search className="w-4 h-4 mr-2" aria-hidden="true" />
                 Buscar pessoas
               </Button>
             </Link>
-          </div>
+          </nav>
         </CardContent>
       </Card>
     </div>

@@ -12,19 +12,36 @@ export function ErrorDisplay({
   onRetry,
 }: ErrorDisplayProps) {
   return (
-    <Card className="max-w-md mx-auto">
+    <Card 
+      className="max-w-md mx-auto"
+      role="alert"
+      aria-live="polite"
+      aria-atomic="true"
+    >
       <CardContent className="p-8 text-center">
-        <AlertTriangle className="w-12 h-12 text-destructive mx-auto mb-4" />
-        <h3 className="text-lg font-semibold text-foreground mb-2">
+        <AlertTriangle 
+          className="w-12 h-12 text-destructive mx-auto mb-4" 
+          aria-hidden="true"
+        />
+        <h3 
+          className="text-lg font-semibold text-foreground mb-2"
+          id="error-title"
+        >
           Erro ao carregar
         </h3>
-        <p className="text-muted-foreground mb-6">{message}</p>
+        <p 
+          className="text-muted-foreground mb-6"
+          aria-describedby="error-title"
+        >
+          {message}
+        </p>
         {onRetry && (
           <Button
             onClick={onRetry}
             variant="outline"
+            aria-describedby="error-title"
           >
-            <RefreshCw className="w-4 h-4 mr-2" />
+            <RefreshCw className="w-4 h-4 mr-2" aria-hidden="true" />
             Tentar novamente
           </Button>
         )}

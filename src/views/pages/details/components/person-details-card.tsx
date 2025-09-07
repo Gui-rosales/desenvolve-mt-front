@@ -2,7 +2,14 @@ import type { pessoaModel } from '@/app/models/pessoa';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { formatDate, getStatusColor, getStatusText } from '@/lib/utils';
-import { Calendar, MapPin, User, FileText, ImageIcon, Shirt } from 'lucide-react';
+import {
+  Calendar,
+  MapPin,
+  User,
+  FileText,
+  ImageIcon,
+  Shirt,
+} from 'lucide-react';
 
 interface PersonDetailsProps {
   person: pessoaModel;
@@ -13,7 +20,10 @@ export function PersonDetails({ person }: PersonDetailsProps) {
   const statusColor = getStatusColor(person);
 
   return (
-    <div className="space-y-6" data-testid="person-details">
+    <div
+      className="space-y-6"
+      data-testid="person-details"
+    >
       {/* Card Principal - Informações da Pessoa */}
       <Card>
         <CardContent className="p-6">
@@ -29,10 +39,14 @@ export function PersonDetails({ person }: PersonDetailsProps) {
                   alt={`Foto de ${person.nome}`}
                   className="w-full h-full object-cover"
                   data-testid="person-photo"
+                  loading="lazy"
                 />
                 {/* Badge de Status sobre a foto */}
                 <div className="absolute top-3 right-3">
-                  <Badge className={`${statusColor} text-sm px-3 py-1`}>
+                  <Badge
+                    className={`${statusColor} text-sm px-3 py-1`}
+                    aria-label={`Status: ${statusText}`}
+                  >
                     {statusText}
                   </Badge>
                 </div>
@@ -42,26 +56,52 @@ export function PersonDetails({ person }: PersonDetailsProps) {
             {/* Informações da Pessoa */}
             <div className="lg:col-span-2 space-y-6">
               {/* Cabeçalho com Nome e Status */}
-              <div className="border-b border-border pb-4">
+              <header className="border-b border-border pb-4">
                 <h1 className="text-3xl font-bold text-foreground mb-2">
                   {person.nome}
                 </h1>
                 <div className="flex flex-wrap items-center gap-4 text-lg text-muted-foreground">
                   <div className="flex items-center gap-2">
-                    <User className="w-5 h-5" />
-                    <span><strong>Idade:</strong> {person.idade} anos</span>
+                    <User
+                      className="w-5 h-5"
+                      aria-hidden="true"
+                    />
+                    <span>
+                      <strong>Idade:</strong>{' '}
+                      <span aria-label={`${person.idade} anos`}>
+                        {person.idade} anos
+                      </span>
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <User className="w-5 h-5" />
-                    <span><strong>Sexo:</strong> {person.sexo === 'MASCULINO' ? 'Masculino' : 'Feminino'}</span>
+                    <User
+                      className="w-5 h-5"
+                      aria-hidden="true"
+                    />
+                    <span>
+                      <strong>Sexo:</strong>{' '}
+                      <span
+                        aria-label={`Sexo: ${
+                          person.sexo === 'MASCULINO' ? 'Masculino' : 'Feminino'
+                        }`}
+                      >
+                        {person.sexo === 'MASCULINO' ? 'Masculino' : 'Feminino'}
+                      </span>
+                    </span>
                   </div>
                 </div>
-              </div>
+              </header>
 
               {/* Informações da Última Ocorrência */}
               {person.ultimaOcorrencia && (
-                <div className="space-y-4">
-                  <h2 className="text-xl font-semibold text-foreground border-b border-border pb-2">
+                <section
+                  className="space-y-4"
+                  aria-labelledby="disappearance-info-heading"
+                >
+                  <h2
+                    id="disappearance-info-heading"
+                    className="text-xl font-semibold text-foreground border-b border-border pb-2"
+                  >
                     Informações do Desaparecimento
                   </h2>
 
@@ -69,11 +109,22 @@ export function PersonDetails({ person }: PersonDetailsProps) {
                     {/* Data do Desaparecimento */}
                     <div className="border border-border rounded-lg p-4 bg-card/30">
                       <div className="flex items-center gap-3 mb-2">
-                        <Calendar className="w-5 h-5 text-muted-foreground" />
-                        <span className="font-medium text-foreground">Data do Desaparecimento</span>
+                        <Calendar
+                          className="w-5 h-5 text-muted-foreground"
+                          aria-hidden="true"
+                        />
+                        <span className="font-medium text-foreground">
+                          Data do Desaparecimento
+                        </span>
                       </div>
                       <p className="text-lg font-semibold text-foreground">
-                        {formatDate(person.ultimaOcorrencia.dtDesaparecimento)}
+                        <time
+                          dateTime={person.ultimaOcorrencia.dtDesaparecimento}
+                        >
+                          {formatDate(
+                            person.ultimaOcorrencia.dtDesaparecimento
+                          )}
+                        </time>
                       </p>
                     </div>
 
@@ -81,10 +132,18 @@ export function PersonDetails({ person }: PersonDetailsProps) {
                     {person.ultimaOcorrencia.localDesaparecimentoConcat && (
                       <div className="border border-border rounded-lg p-4 bg-card/30">
                         <div className="flex items-start gap-3 mb-2">
-                          <MapPin className="w-5 h-5 text-muted-foreground mt-0.5 flex-shrink-0" />
-                          <span className="font-medium text-foreground">Local do Desaparecimento</span>
+                          <MapPin
+                            className="w-5 h-5 text-muted-foreground mt-0.5 flex-shrink-0"
+                            aria-hidden="true"
+                          />
+                          <span className="font-medium text-foreground">
+                            Local do Desaparecimento
+                          </span>
                         </div>
-                        <p className="text-foreground leading-relaxed">
+                        <p
+                          className="text-foreground leading-relaxed"
+                          aria-label={`Local do desaparecimento: ${person.ultimaOcorrencia.localDesaparecimentoConcat}`}
+                        >
                           {person.ultimaOcorrencia.localDesaparecimentoConcat}
                         </p>
                       </div>
@@ -94,16 +153,27 @@ export function PersonDetails({ person }: PersonDetailsProps) {
                     {person.ultimaOcorrencia.dataLocalizacao && (
                       <div className="border border-primary/20 rounded-lg p-4 bg-primary/5 md:col-span-2">
                         <div className="flex items-center gap-3 mb-2">
-                          <Calendar className="w-5 h-5 text-primary" />
-                          <span className="font-medium text-primary">Data da Localização</span>
+                          <Calendar
+                            className="w-5 h-5 text-primary"
+                            aria-hidden="true"
+                          />
+                          <span className="font-medium text-primary">
+                            Data da Localização
+                          </span>
                         </div>
                         <p className="text-lg font-semibold text-primary">
-                          {formatDate(person.ultimaOcorrencia.dataLocalizacao)}
+                          <time
+                            dateTime={person.ultimaOcorrencia.dataLocalizacao}
+                          >
+                            {formatDate(
+                              person.ultimaOcorrencia.dataLocalizacao
+                            )}
+                          </time>
                         </p>
                       </div>
                     )}
                   </div>
-                </div>
+                </section>
               )}
             </div>
           </div>
