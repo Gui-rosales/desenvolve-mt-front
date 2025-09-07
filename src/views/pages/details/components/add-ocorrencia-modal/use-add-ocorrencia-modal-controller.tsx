@@ -18,6 +18,7 @@ export function useAddOcorrenciaModalController({ ocoId }: { ocoId: number }) {
   const form = useForm<OcorrenciaFormData>({
     defaultValues: {
       descricao: 'Informação adicionada pela comunidade',
+      informacao: "",
     },
     resolver: zodResolver(ocorrenciaSchema),
   });
